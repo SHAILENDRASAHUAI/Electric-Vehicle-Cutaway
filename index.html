@@ -56,8 +56,8 @@
         width: 430px;
         height: 430px;
         background: rgba(118, 167, 255, 0.16);
-        right: -68vw;
-        top: 22vh;
+        right: -320px;
+        top: 22%;
         animation: float 14s ease-in-out infinite reverse;
       }
 
@@ -65,8 +65,8 @@
         width: 280px;
         height: 280px;
         background: rgba(255, 217, 112, 0.14);
-        left: 42vw;
-        top: 72vh;
+        left: 42%;
+        top: 72%;
         animation: float 12s ease-in-out infinite;
       }
 
@@ -309,7 +309,7 @@
 
       .charge-fill {
         height: 100%;
-        width: 74%;
+        width: 0;
         background: linear-gradient(90deg, var(--accent), var(--active));
         transition: width 0.5s ease;
       }
@@ -484,6 +484,11 @@
       const randomizeBtn = document.getElementById("randomize");
       const tourBtn = document.getElementById("tour");
       const vizCard = document.getElementById("viz-card");
+      const MIN_SURPRISE_CHARGE = 45;
+      const MAX_SURPRISE_CHARGE = 97;
+      const SURPRISE_CHARGE_SWING = 18;
+      const SURPRISE_CHARGE_OFFSET = 9;
+      const TOUR_INTERVAL_MS = 1600;
 
       let activePart = "battery";
       let tourId = null;
@@ -509,11 +514,18 @@
         const partKeys = Object.keys(details);
         setActive(partKeys[Math.floor(Math.random() * partKeys.length)]);
 
-        const boosted = Math.max(45, Math.min(97, details[activePart].charge + Math.floor(Math.random() * 18) - 9));
+        const boosted = Math.max(
+          MIN_SURPRISE_CHARGE,
+          Math.min(
+            MAX_SURPRISE_CHARGE,
+            details[activePart].charge + Math.floor(Math.random() * SURPRISE_CHARGE_SWING) - SURPRISE_CHARGE_OFFSET
+          )
+        );
         chargeFill.style.width = `${boosted}%`;
         chargeValue.textContent = `${boosted}%`;
 
         vizCard.classList.remove("spark");
+        // Force reflow to restart sparkle animation.
         void vizCard.offsetWidth;
         vizCard.classList.add("spark");
       }
@@ -532,7 +544,7 @@
         tourId = setInterval(() => {
           index = (index + 1) % sequence.length;
           setActive(sequence[index]);
-        }, 1600);
+        }, TOUR_INTERVAL_MS);
 
         tourBtn.textContent = "Auto tour: On";
       }
