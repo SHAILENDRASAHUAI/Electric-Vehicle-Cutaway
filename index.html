@@ -194,7 +194,7 @@
       }
 
       .part.active {
-        filter: drop-shadow(0 0 12px color-mix(in srgb, var(--active) 65%, #000));
+        filter: drop-shadow(0 0 12px rgba(255, 217, 112, 0.62));
         transform: translateY(-2px);
       }
 
@@ -422,10 +422,10 @@
       <aside class="card sidebar">
         <strong>Systems map</strong>
         <div class="labels" id="labels">
-          <button class="label" data-part="battery" aria-label="Battery Pack: Energy storage and thermal shielding">Battery Pack<small>Energy storage + thermal shielding</small></button>
-          <button class="label" data-part="motor" aria-label="Electric Motor: Instant torque and wheel propulsion">Electric Motor<small>Instant torque and wheel propulsion</small></button>
-          <button class="label" data-part="inverter" aria-label="Inverter: Power conversion and torque control">Inverter<small>Power conversion and torque control</small></button>
-          <button class="label" data-part="charger" aria-label="Onboard Charger: Grid AC to battery DC conversion">Onboard Charger<small>Grid AC to battery DC conversion</small></button>
+          <button class="label" data-part="battery">Battery Pack<small>Energy storage + thermal shielding</small></button>
+          <button class="label" data-part="motor">Electric Motor<small>Instant torque and wheel propulsion</small></button>
+          <button class="label" data-part="inverter">Inverter<small>Power conversion and torque control</small></button>
+          <button class="label" data-part="charger">Onboard Charger<small>Grid AC to battery DC conversion</small></button>
         </div>
         <div class="detail" id="detail" aria-live="polite">
           <h2 id="detail-title">Battery Pack</h2>
@@ -490,6 +490,7 @@
       const CHARGE_VARIATION_OFFSET = 9;
       const TOUR_INTERVAL_MS = 1600;
       const TOUR_SEQUENCE = ["battery", "inverter", "motor", "charger"];
+      const liveCharge = Object.fromEntries(Object.keys(details).map((key) => [key, details[key].charge]));
 
       let activePart = "battery";
       let tourId = null;
@@ -502,8 +503,9 @@
         detailTitle.textContent = details[part].title;
         detailText.textContent = details[part].text;
         detailMeta.textContent = details[part].meta;
-        chargeFill.style.width = `${details[part].charge}%`;
-        chargeValue.textContent = `${details[part].charge}%`;
+        const charge = liveCharge[part] ?? details[part].charge;
+        chargeFill.style.width = `${charge}%`;
+        chargeValue.textContent = `${charge}%`;
       }
 
       function applySurprise() {
@@ -524,7 +526,7 @@
               CHARGE_VARIATION_OFFSET
           )
         );
-        details[activePart].charge = boosted;
+        liveCharge[activePart] = boosted;
         chargeFill.style.width = `${boosted}%`;
         chargeValue.textContent = `${boosted}%`;
 
