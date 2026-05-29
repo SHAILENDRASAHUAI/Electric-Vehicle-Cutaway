@@ -422,10 +422,10 @@
       <aside class="card sidebar">
         <strong>Systems map</strong>
         <div class="labels" id="labels">
-          <button class="label" data-part="battery">Battery Pack<small>Energy storage + thermal shielding</small></button>
-          <button class="label" data-part="motor">Electric Motor<small>Instant torque and wheel propulsion</small></button>
-          <button class="label" data-part="inverter">Inverter<small>Power conversion and torque control</small></button>
-          <button class="label" data-part="charger">Onboard Charger<small>Grid AC to battery DC conversion</small></button>
+          <button class="label" data-part="battery" aria-label="Battery Pack: Energy storage and thermal shielding">Battery Pack<small>Energy storage + thermal shielding</small></button>
+          <button class="label" data-part="motor" aria-label="Electric Motor: Instant torque and wheel propulsion">Electric Motor<small>Instant torque and wheel propulsion</small></button>
+          <button class="label" data-part="inverter" aria-label="Inverter: Power conversion and torque control">Inverter<small>Power conversion and torque control</small></button>
+          <button class="label" data-part="charger" aria-label="Onboard Charger: Grid AC to battery DC conversion">Onboard Charger<small>Grid AC to battery DC conversion</small></button>
         </div>
         <div class="detail" id="detail" aria-live="polite">
           <h2 id="detail-title">Battery Pack</h2>
@@ -484,11 +484,12 @@
       const randomizeBtn = document.getElementById("randomize");
       const tourBtn = document.getElementById("tour");
       const vizCard = document.getElementById("viz-card");
-      const MIN_SURPRISE_CHARGE = 45;
-      const MAX_SURPRISE_CHARGE = 97;
-      const SURPRISE_CHARGE_RANGE = 19;
-      const SURPRISE_CHARGE_CENTER_OFFSET = 9;
+      const CHARGE_CLAMP_MIN = 45;
+      const CHARGE_CLAMP_MAX = 97;
+      const CHARGE_VARIATION_RANGE = 19;
+      const CHARGE_VARIATION_OFFSET = 9;
       const TOUR_INTERVAL_MS = 1600;
+      const TOUR_SEQUENCE = ["battery", "inverter", "motor", "charger"];
 
       let activePart = "battery";
       let tourId = null;
@@ -515,19 +516,20 @@
         setActive(partKeys[Math.floor(Math.random() * partKeys.length)]);
 
         const boosted = Math.max(
-          MIN_SURPRISE_CHARGE,
+          CHARGE_CLAMP_MIN,
           Math.min(
-            MAX_SURPRISE_CHARGE,
+            CHARGE_CLAMP_MAX,
             details[activePart].charge +
-              Math.floor(Math.random() * SURPRISE_CHARGE_RANGE) -
-              SURPRISE_CHARGE_CENTER_OFFSET
+              Math.floor(Math.random() * CHARGE_VARIATION_RANGE) -
+              CHARGE_VARIATION_OFFSET
           )
         );
+        details[activePart].charge = boosted;
         chargeFill.style.width = `${boosted}%`;
         chargeValue.textContent = `${boosted}%`;
 
         vizCard.classList.remove("spark");
-        // Force reflow to restart sparkle animation.
+        // Force reflow to restart spark animation.
         void vizCard.offsetWidth;
         vizCard.classList.add("spark");
       }
@@ -540,12 +542,10 @@
           return;
         }
 
-        const sequence = ["battery", "inverter", "motor", "charger"];
-
         tourId = setInterval(() => {
-          const index = sequence.indexOf(activePart);
-          const nextIndex = index >= 0 ? (index + 1) % sequence.length : 0;
-          setActive(sequence[nextIndex]);
+          const index = TOUR_SEQUENCE.indexOf(activePart);
+          const nextIndex = index >= 0 ? (index + 1) % TOUR_SEQUENCE.length : 0;
+          setActive(TOUR_SEQUENCE[nextIndex]);
         }, TOUR_INTERVAL_MS);
 
         tourBtn.textContent = "Auto tour: On";
