@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Electric Vehicle Anatomy</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --panel: #121b2e;
+        --text: #e7f0ff;
+        --muted: #9ab0d1;
+        --accent: #43e6c5;
+        --accent-2: #66a3ff;
+        --active: #ffd166;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+        background: radial-gradient(circle at top, #1a2844, var(--bg));
+        color: var(--text);
+      }
+
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1rem;
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: 1.8fr 1fr;
+      }
+
+      .card {
+        background: linear-gradient(180deg, #16233d, var(--panel));
+        border: 1px solid #26375a;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+      }
+
+      .viz {
+        padding: 1rem;
+      }
+
+      h1 {
+        margin: 0 0 0.35rem;
+        font-size: clamp(1.4rem, 2.5vw, 2rem);
+      }
+
+      p {
+        margin: 0 0 1rem;
+        color: var(--muted);
+      }
+
+      .sidebar {
+        padding: 1rem;
+      }
+
+      .labels {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .label {
+        width: 100%;
+        text-align: left;
+        border: 1px solid #304770;
+        background: #162540;
+        color: var(--text);
+        border-radius: 10px;
+        padding: 0.65rem 0.75rem;
+        cursor: pointer;
+        transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
+      }
+
+      .label:hover,
+      .label:focus-visible {
+        transform: translateY(-1px);
+        border-color: var(--accent);
+      }
+
+      .label.active {
+        background: #253b62;
+        border-color: var(--active);
+      }
+
+      .detail {
+        margin-top: 0.9rem;
+        padding: 0.8rem;
+        border: 1px solid #2c436d;
+        border-radius: 10px;
+        background: #101b30;
+        min-height: 110px;
+      }
+
+      .detail h2 {
+        margin: 0 0 0.35rem;
+        font-size: 1.05rem;
+      }
+
+      .detail p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .part {
+        cursor: pointer;
+        transition: opacity 0.2s ease, filter 0.2s ease;
+      }
+
+      .part:hover {
+        opacity: 0.9;
+      }
+
+      .part.active {
+        filter: drop-shadow(0 0 10px rgba(255, 209, 102, 0.65));
+      }
+
+      .callout {
+        fill: var(--accent-2);
+      }
+
+      @media (max-width: 880px) {
+        .wrap {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="card viz">
+        <h1>Electric Vehicle Anatomy</h1>
+        <p>Hover or click labels and cutaway sections to explore core EV systems.</p>
+
+        <svg viewBox="0 0 900 450" role="img" aria-labelledby="title desc">
+          <title id="title">Cutaway electric vehicle diagram</title>
+          <desc id="desc">Interactive diagram showing battery, motor, inverter and onboard charger.</desc>
+
+          <rect x="40" y="180" width="820" height="120" rx="30" fill="#1f2d4d" />
+          <path d="M130 180 L230 120 H650 L780 180 Z" fill="#22375f" />
+          <circle cx="220" cy="315" r="62" fill="#0f1628" />
+          <circle cx="690" cy="315" r="62" fill="#0f1628" />
+          <circle cx="220" cy="315" r="35" fill="#273f68" />
+          <circle cx="690" cy="315" r="35" fill="#273f68" />
+
+          <g class="part" data-part="battery" tabindex="0">
+            <rect x="300" y="225" width="290" height="50" rx="8" fill="#34d0b4" />
+            <text x="445" y="256" text-anchor="middle" fill="#052524" font-size="16" font-weight="700">Battery Pack</text>
+          </g>
+
+          <g class="part" data-part="motor" tabindex="0">
+            <rect x="610" y="210" width="95" height="70" rx="10" fill="#ff8f6b" />
+            <text x="658" y="251" text-anchor="middle" fill="#3a160b" font-size="14" font-weight="700">Motor</text>
+          </g>
+
+          <g class="part" data-part="inverter" tabindex="0">
+            <rect x="560" y="160" width="85" height="40" rx="8" fill="#7ea7ff" />
+            <text x="602" y="184" text-anchor="middle" fill="#081838" font-size="12" font-weight="700">Inverter</text>
+          </g>
+
+          <g class="part" data-part="charger" tabindex="0">
+            <rect x="230" y="165" width="80" height="40" rx="8" fill="#c29cff" />
+            <text x="270" y="189" text-anchor="middle" fill="#220e47" font-size="12" font-weight="700">Charger</text>
+          </g>
+
+          <g class="callout">
+            <line x1="445" y1="225" x2="445" y2="160" stroke="currentColor" stroke-width="3" />
+            <line x1="658" y1="210" x2="720" y2="145" stroke="currentColor" stroke-width="3" />
+            <line x1="602" y1="160" x2="602" y2="120" stroke="currentColor" stroke-width="3" />
+            <line x1="270" y1="165" x2="210" y2="125" stroke="currentColor" stroke-width="3" />
+          </g>
+        </svg>
+      </section>
+
+      <aside class="card sidebar">
+        <strong>Components</strong>
+        <div class="labels" id="labels">
+          <button class="label" data-part="battery">Battery Pack</button>
+          <button class="label" data-part="motor">Electric Motor</button>
+          <button class="label" data-part="inverter">Inverter</button>
+          <button class="label" data-part="charger">Onboard Charger</button>
+        </div>
+        <div class="detail" id="detail" aria-live="polite">
+          <h2>Battery Pack</h2>
+          <p>Stores high-voltage energy and supplies DC power for driving and vehicle systems.</p>
+        </div>
+      </aside>
+    </main>
+
+    <script>
+      const details = {
+        battery: {
+          title: "Battery Pack",
+          text: "Stores high-voltage energy and supplies DC power for driving and vehicle systems."
+        },
+        motor: {
+          title: "Electric Motor",
+          text: "Converts electrical energy into torque, delivering propulsion to the wheels."
+        },
+        inverter: {
+          title: "Inverter",
+          text: "Switches battery DC into AC for the motor and controls speed and torque output."
+        },
+        charger: {
+          title: "Onboard Charger",
+          text: "Converts AC from charging stations into DC to recharge the battery safely."
+        }
+      };
+
+      const labelButtons = [...document.querySelectorAll(".label")];
+      const parts = [...document.querySelectorAll(".part")];
+      const detail = document.getElementById("detail");
+
+      function setActive(part) {
+        labelButtons.forEach((el) => el.classList.toggle("active", el.dataset.part === part));
+        parts.forEach((el) => el.classList.toggle("active", el.dataset.part === part));
+        detail.innerHTML = `<h2>${details[part].title}</h2><p>${details[part].text}</p>`;
+      }
+
+      [...labelButtons, ...parts].forEach((el) => {
+        const part = el.dataset.part;
+        el.addEventListener("mouseenter", () => setActive(part));
+        el.addEventListener("focus", () => setActive(part));
+        el.addEventListener("click", () => setActive(part));
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setActive(part);
+          }
+        });
+      });
+
+      setActive("battery");
+    </script>
+  </body>
+</html>
