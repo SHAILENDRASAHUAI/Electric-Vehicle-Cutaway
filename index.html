@@ -357,8 +357,8 @@
             <h1>Electric Vehicle Anatomy</h1>
           </div>
           <div class="actions">
-            <button class="action-btn" id="randomize">Surprise me</button>
-            <button class="action-btn" id="tour">Auto tour: Off</button>
+            <button class="action-btn" id="randomize" aria-label="Randomize the visual theme and highlighted component">Surprise me</button>
+            <button class="action-btn" id="tour" aria-label="Toggle automatic component tour" aria-pressed="false">Auto tour: Off</button>
           </div>
         </div>
         <p class="subtitle">Explore every core EV system with animated energy flow and live performance snapshots.</p>
@@ -517,7 +517,7 @@
         const partKeys = Object.keys(details);
         setActive(partKeys[Math.floor(Math.random() * partKeys.length)]);
 
-        const boosted = Math.max(
+        const variedCharge = Math.max(
           CHARGE_CLAMP_MIN,
           Math.min(
             CHARGE_CLAMP_MAX,
@@ -526,9 +526,9 @@
               CHARGE_VARIATION_OFFSET
           )
         );
-        liveCharge[activePart] = boosted;
-        chargeFill.style.width = `${boosted}%`;
-        chargeValue.textContent = `${boosted}%`;
+        liveCharge[activePart] = variedCharge;
+        chargeFill.style.width = `${variedCharge}%`;
+        chargeValue.textContent = `${variedCharge}%`;
 
         vizCard.classList.remove("spark");
         // Force reflow to restart spark animation.
@@ -541,6 +541,7 @@
           clearInterval(tourId);
           tourId = null;
           tourBtn.textContent = "Auto tour: Off";
+          tourBtn.setAttribute("aria-pressed", "false");
           return;
         }
 
@@ -551,6 +552,7 @@
         }, TOUR_INTERVAL_MS);
 
         tourBtn.textContent = "Auto tour: On";
+        tourBtn.setAttribute("aria-pressed", "true");
       }
 
       [...labelButtons, ...parts].forEach((el) => {
