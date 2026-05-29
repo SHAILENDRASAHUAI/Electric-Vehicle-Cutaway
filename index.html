@@ -486,8 +486,8 @@
       const vizCard = document.getElementById("viz-card");
       const MIN_SURPRISE_CHARGE = 45;
       const MAX_SURPRISE_CHARGE = 97;
-      const SURPRISE_CHARGE_SWING = 18;
-      const SURPRISE_CHARGE_OFFSET = 9;
+      const SURPRISE_CHARGE_RANGE = 19;
+      const SURPRISE_CHARGE_CENTER_OFFSET = 9;
       const TOUR_INTERVAL_MS = 1600;
 
       let activePart = "battery";
@@ -518,7 +518,9 @@
           MIN_SURPRISE_CHARGE,
           Math.min(
             MAX_SURPRISE_CHARGE,
-            details[activePart].charge + Math.floor(Math.random() * SURPRISE_CHARGE_SWING) - SURPRISE_CHARGE_OFFSET
+            details[activePart].charge +
+              Math.floor(Math.random() * SURPRISE_CHARGE_RANGE) -
+              SURPRISE_CHARGE_CENTER_OFFSET
           )
         );
         chargeFill.style.width = `${boosted}%`;
@@ -539,11 +541,11 @@
         }
 
         const sequence = ["battery", "inverter", "motor", "charger"];
-        let index = sequence.indexOf(activePart);
 
         tourId = setInterval(() => {
-          index = (index + 1) % sequence.length;
-          setActive(sequence[index]);
+          const index = sequence.indexOf(activePart);
+          const nextIndex = index >= 0 ? (index + 1) % sequence.length : 0;
+          setActive(sequence[nextIndex]);
         }, TOUR_INTERVAL_MS);
 
         tourBtn.textContent = "Auto tour: On";
