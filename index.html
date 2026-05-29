@@ -143,9 +143,9 @@
         <h1>Electric Vehicle Anatomy</h1>
         <p>Hover or click labels and cutaway sections to explore core EV systems.</p>
 
-        <svg viewBox="0 0 900 450" role="img" aria-labelledby="title desc">
-          <title id="title">Cutaway electric vehicle diagram</title>
-          <desc id="desc">Interactive diagram showing battery, motor, inverter and onboard charger.</desc>
+        <svg viewBox="0 0 900 450" role="img" aria-labelledby="ev-svg-title" aria-describedby="ev-svg-desc">
+          <title id="ev-svg-title">Cutaway electric vehicle diagram</title>
+          <desc id="ev-svg-desc">Interactive diagram showing battery, motor, inverter and onboard charger.</desc>
 
           <rect x="40" y="180" width="820" height="120" rx="30" fill="#1f2d4d" />
           <path d="M130 180 L230 120 H650 L780 180 Z" fill="#22375f" />
@@ -192,8 +192,8 @@
           <button class="label" data-part="charger">Onboard Charger</button>
         </div>
         <div class="detail" id="detail" aria-live="polite">
-          <h2>Battery Pack</h2>
-          <p>Stores high-voltage energy and supplies DC power for driving and vehicle systems.</p>
+          <h2 id="detail-title">Battery Pack</h2>
+          <p id="detail-text">Stores high-voltage energy and supplies DC power for driving and vehicle systems.</p>
         </div>
       </aside>
     </main>
@@ -220,12 +220,15 @@
 
       const labelButtons = [...document.querySelectorAll(".label")];
       const parts = [...document.querySelectorAll(".part")];
-      const detail = document.getElementById("detail");
+      const detailTitle = document.getElementById("detail-title");
+      const detailText = document.getElementById("detail-text");
 
       function setActive(part) {
+        if (!details[part]) return;
         labelButtons.forEach((el) => el.classList.toggle("active", el.dataset.part === part));
         parts.forEach((el) => el.classList.toggle("active", el.dataset.part === part));
-        detail.innerHTML = `<h2>${details[part].title}</h2><p>${details[part].text}</p>`;
+        detailTitle.textContent = details[part].title;
+        detailText.textContent = details[part].text;
       }
 
       [...labelButtons, ...parts].forEach((el) => {
