@@ -6,13 +6,15 @@
     <title>Electric Vehicle Anatomy</title>
     <style>
       :root {
-        --bg: #0b1220;
-        --panel: #121b2e;
-        --text: #e7f0ff;
-        --muted: #9ab0d1;
-        --accent: #43e6c5;
-        --accent-2: #66a3ff;
-        --active: #ffd166;
+        --bg-1: #070b17;
+        --bg-2: #0f1d38;
+        --panel: rgba(13, 24, 46, 0.76);
+        --line: rgba(142, 180, 255, 0.28);
+        --text: #edf5ff;
+        --muted: #9eb7de;
+        --accent: #4af7d8;
+        --accent-2: #76a7ff;
+        --active: #ffd970;
       }
 
       * {
@@ -21,89 +23,157 @@
 
       body {
         margin: 0;
+        min-height: 100vh;
         font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
-        background: radial-gradient(circle at top, #1a2844, var(--bg));
         color: var(--text);
+        background:
+          radial-gradient(circle at 15% 20%, #18345f 0%, transparent 45%),
+          radial-gradient(circle at 80% 10%, #194a54 0%, transparent 35%),
+          linear-gradient(120deg, var(--bg-1), var(--bg-2));
+        overflow-x: hidden;
+      }
+
+      .aurora,
+      .aurora::before,
+      .aurora::after {
+        content: "";
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(70px);
+        z-index: -1;
+      }
+
+      .aurora {
+        width: 360px;
+        height: 360px;
+        background: rgba(74, 247, 216, 0.12);
+        top: -110px;
+        left: -80px;
+        animation: float 11s ease-in-out infinite;
+      }
+
+      .aurora::before {
+        width: 430px;
+        height: 430px;
+        background: rgba(118, 167, 255, 0.16);
+        right: -320px;
+        top: 22%;
+        animation: float 14s ease-in-out infinite reverse;
+      }
+
+      .aurora::after {
+        width: 280px;
+        height: 280px;
+        background: rgba(255, 217, 112, 0.14);
+        left: 42%;
+        top: 72%;
+        animation: float 12s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        50% {
+          transform: translate3d(0, -22px, 0) scale(1.06);
+        }
       }
 
       .wrap {
-        max-width: 1100px;
+        max-width: 1220px;
         margin: 0 auto;
-        padding: 1rem;
+        padding: 1.1rem;
         display: grid;
         gap: 1rem;
-        grid-template-columns: 1.8fr 1fr;
+        grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
       }
 
       .card {
-        background: linear-gradient(180deg, #16233d, var(--panel));
-        border: 1px solid #26375a;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+        backdrop-filter: blur(10px);
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
       }
 
       .viz {
-        padding: 1rem;
+        padding: 1.1rem;
+      }
+
+      .hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        font-size: 0.74rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 0.4rem;
       }
 
       h1 {
-        margin: 0 0 0.35rem;
-        font-size: clamp(1.4rem, 2.5vw, 2rem);
+        margin: 0;
+        font-size: clamp(1.45rem, 2.5vw, 2.2rem);
       }
 
-      p {
-        margin: 0 0 1rem;
+      .subtitle {
+        margin-top: 0.42rem;
+        margin-bottom: 0.95rem;
         color: var(--muted);
       }
 
-      .sidebar {
-        padding: 1rem;
-      }
-
-      .labels {
-        display: grid;
+      .actions {
+        display: flex;
         gap: 0.5rem;
       }
 
-      .label {
-        width: 100%;
-        text-align: left;
-        border: 1px solid #304770;
-        background: #162540;
+      .action-btn {
+        border: 1px solid rgba(160, 201, 255, 0.35);
         color: var(--text);
+        background: rgba(20, 35, 63, 0.8);
         border-radius: 10px;
-        padding: 0.65rem 0.75rem;
+        padding: 0.55rem 0.72rem;
         cursor: pointer;
-        transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
+        font-weight: 600;
+        transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
       }
 
-      .label:hover,
-      .label:focus-visible {
-        transform: translateY(-1px);
+      .action-btn:hover,
+      .action-btn:focus-visible {
         border-color: var(--accent);
+        transform: translateY(-2px);
       }
 
-      .label.active {
-        background: #253b62;
-        border-color: var(--active);
+      .dashboard {
+        margin-top: 0.15rem;
+        margin-bottom: 0.8rem;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.55rem;
       }
 
-      .detail {
-        margin-top: 0.9rem;
-        padding: 0.8rem;
-        border: 1px solid #2c436d;
-        border-radius: 10px;
-        background: #101b30;
-        min-height: 110px;
+      .kpi {
+        border: 1px solid rgba(146, 182, 246, 0.32);
+        background: rgba(12, 24, 45, 0.8);
+        border-radius: 12px;
+        padding: 0.6rem;
       }
 
-      .detail h2 {
-        margin: 0 0 0.35rem;
-        font-size: 1.05rem;
+      .kpi strong {
+        font-size: 1.1rem;
       }
 
-      .detail p {
-        margin: 0;
+      .kpi span {
+        display: block;
+        margin-top: 0.15rem;
+        font-size: 0.79rem;
         color: var(--muted);
       }
 
@@ -115,47 +185,210 @@
 
       .part {
         cursor: pointer;
-        transition: opacity 0.2s ease, filter 0.2s ease;
+        transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
       }
 
-      .part:hover {
-        opacity: 0.9;
+      .part:hover,
+      .part:focus-visible {
+        opacity: 0.96;
       }
 
       .part.active {
-        filter: drop-shadow(0 0 10px rgba(255, 209, 102, 0.65));
+        filter: drop-shadow(0 0 12px rgba(255, 217, 112, 0.62));
+        transform: translateY(-2px);
       }
 
       .callout {
-        fill: var(--accent-2);
+        color: var(--accent-2);
       }
 
-      @media (max-width: 880px) {
+      .energy {
+        stroke: var(--accent);
+        stroke-width: 4;
+        fill: none;
+        stroke-dasharray: 10 10;
+        animation: flow 1.1s linear infinite;
+        opacity: 0.85;
+      }
+
+      @keyframes flow {
+        to {
+          stroke-dashoffset: -40;
+        }
+      }
+
+      .sidebar {
+        padding: 1rem;
+        display: grid;
+        gap: 0.7rem;
+        align-content: start;
+      }
+
+      .labels {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .label {
+        width: 100%;
+        text-align: left;
+        border: 1px solid #355584;
+        background: rgba(18, 33, 58, 0.84);
+        color: var(--text);
+        border-radius: 11px;
+        padding: 0.68rem 0.75rem;
+        cursor: pointer;
+        transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
+        font-weight: 600;
+      }
+
+      .label small {
+        display: block;
+        margin-top: 0.2rem;
+        color: var(--muted);
+        font-size: 0.74rem;
+        font-weight: 500;
+      }
+
+      .label:hover,
+      .label:focus-visible {
+        transform: translateY(-1px);
+        border-color: var(--accent);
+      }
+
+      .label.active {
+        background: rgba(40, 67, 111, 0.92);
+        border-color: var(--active);
+      }
+
+      .detail {
+        margin-top: 0.2rem;
+        padding: 0.9rem;
+        border: 1px solid #375887;
+        border-radius: 12px;
+        background: rgba(9, 18, 35, 0.86);
+        min-height: 150px;
+      }
+
+      .detail h2 {
+        margin: 0;
+        font-size: 1.08rem;
+      }
+
+      .detail p {
+        margin: 0.48rem 0 0;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .meta {
+        margin-top: 0.6rem;
+        font-size: 0.83rem;
+        color: var(--accent);
+      }
+
+      .charge {
+        margin-top: 0.75rem;
+      }
+
+      .charge-head {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-bottom: 0.33rem;
+      }
+
+      .charge-track {
+        width: 100%;
+        height: 9px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(100, 132, 190, 0.22);
+      }
+
+      .charge-fill {
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, var(--accent), var(--active));
+        transition: width 0.5s ease;
+      }
+
+      .spark {
+        animation: pulse 0.55s ease;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 rgba(255, 217, 112, 0);
+        }
+        50% {
+          box-shadow: 0 0 24px rgba(255, 217, 112, 0.35);
+        }
+        100% {
+          box-shadow: 0 0 0 rgba(255, 217, 112, 0);
+        }
+      }
+
+      @media (max-width: 980px) {
         .wrap {
+          grid-template-columns: 1fr;
+        }
+
+        .dashboard {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 560px) {
+        .dashboard {
           grid-template-columns: 1fr;
         }
       }
     </style>
   </head>
   <body>
+    <div class="aurora" aria-hidden="true"></div>
     <main class="wrap">
-      <section class="card viz">
-        <h1>Electric Vehicle Anatomy</h1>
-        <p>Hover or click labels and cutaway sections to explore core EV systems.</p>
+      <section class="card viz" id="viz-card">
+        <div class="hero">
+          <div>
+            <span class="eyebrow">Interactive EV Experience</span>
+            <h1>Electric Vehicle Anatomy</h1>
+          </div>
+          <div class="actions">
+            <button class="action-btn" id="randomize" aria-label="Randomize the visual theme and highlighted component">Surprise me</button>
+            <button class="action-btn" id="tour" aria-label="Toggle automatic component tour" aria-pressed="false">Auto tour: Off</button>
+          </div>
+        </div>
+        <p class="subtitle">Explore every core EV system with animated energy flow and live performance snapshots.</p>
+
+        <div class="dashboard" aria-label="Vehicle highlights">
+          <div class="kpi"><strong>402 mi</strong><span>Estimated range</span></div>
+          <div class="kpi"><strong>17 min</strong><span>10-80% rapid charge</span></div>
+          <div class="kpi"><strong>3.6s</strong><span>0-60 mph acceleration</span></div>
+        </div>
 
         <svg viewBox="0 0 900 450" role="img" aria-labelledby="ev-svg-title" aria-describedby="ev-svg-desc">
           <title id="ev-svg-title">Cutaway electric vehicle diagram</title>
           <desc id="ev-svg-desc">Interactive diagram showing battery, motor, inverter and onboard charger.</desc>
 
-          <rect x="40" y="180" width="820" height="120" rx="30" fill="#1f2d4d" />
-          <path d="M130 180 L230 120 H650 L780 180 Z" fill="#22375f" />
+          <defs>
+            <linearGradient id="bodyGrad" x1="0" x2="1">
+              <stop offset="0%" stop-color="#20355f" />
+              <stop offset="100%" stop-color="#1d4676" />
+            </linearGradient>
+          </defs>
+
+          <rect x="40" y="180" width="820" height="120" rx="30" fill="url(#bodyGrad)" />
+          <path d="M130 180 L230 120 H650 L780 180 Z" fill="#264778" />
           <circle cx="220" cy="315" r="62" fill="#0f1628" />
           <circle cx="690" cy="315" r="62" fill="#0f1628" />
-          <circle cx="220" cy="315" r="35" fill="#273f68" />
-          <circle cx="690" cy="315" r="35" fill="#273f68" />
+          <circle cx="220" cy="315" r="35" fill="#2a4b7a" />
+          <circle cx="690" cy="315" r="35" fill="#2a4b7a" />
 
           <g class="part" data-part="battery" tabindex="0">
-            <rect x="300" y="225" width="290" height="50" rx="8" fill="#34d0b4" />
+            <rect x="300" y="225" width="290" height="50" rx="8" fill="#38ddbe" />
             <text x="445" y="256" text-anchor="middle" fill="#052524" font-size="16" font-weight="700">Battery Pack</text>
           </g>
 
@@ -180,20 +413,28 @@
             <line x1="602" y1="160" x2="602" y2="120" stroke="currentColor" stroke-width="3" />
             <line x1="270" y1="165" x2="210" y2="125" stroke="currentColor" stroke-width="3" />
           </g>
+
+          <path class="energy" d="M445 225 L602 180 L658 210" />
+          <path class="energy" d="M445 275 L658 280" />
         </svg>
       </section>
 
       <aside class="card sidebar">
-        <strong>Components</strong>
+        <strong>Systems map</strong>
         <div class="labels" id="labels">
-          <button class="label" data-part="battery">Battery Pack</button>
-          <button class="label" data-part="motor">Electric Motor</button>
-          <button class="label" data-part="inverter">Inverter</button>
-          <button class="label" data-part="charger">Onboard Charger</button>
+          <button class="label" data-part="battery">Battery Pack<small>Energy storage + thermal shielding</small></button>
+          <button class="label" data-part="motor">Electric Motor<small>Instant torque and wheel propulsion</small></button>
+          <button class="label" data-part="inverter">Inverter<small>Power conversion and torque control</small></button>
+          <button class="label" data-part="charger">Onboard Charger<small>Grid AC to battery DC conversion</small></button>
         </div>
         <div class="detail" id="detail" aria-live="polite">
           <h2 id="detail-title">Battery Pack</h2>
           <p id="detail-text">Stores high-voltage energy and supplies DC power for driving and vehicle systems.</p>
+          <div class="meta" id="detail-meta">Nominal pack voltage: 400V • 92% round-trip efficiency</div>
+          <div class="charge">
+            <div class="charge-head"><span>Live energy level</span><span id="charge-value">74%</span></div>
+            <div class="charge-track"><div class="charge-fill" id="charge-fill"></div></div>
+          </div>
         </div>
       </aside>
     </main>
@@ -202,33 +443,116 @@
       const details = {
         battery: {
           title: "Battery Pack",
-          text: "Stores high-voltage energy and supplies DC power for driving and vehicle systems."
+          text: "Stores high-voltage energy and supplies DC power for driving and vehicle systems.",
+          meta: "Nominal pack voltage: 400V • 92% round-trip efficiency",
+          charge: 74
         },
         motor: {
           title: "Electric Motor",
-          text: "Converts electrical energy into torque, delivering propulsion to the wheels."
+          text: "Converts electrical energy into torque, delivering propulsion to the wheels.",
+          meta: "Peak output: 320 kW • 93% peak drive efficiency",
+          charge: 66
         },
         inverter: {
           title: "Inverter",
-          text: "Switches battery DC into AC for the motor and controls speed and torque output."
+          text: "Switches battery DC into AC for the motor and controls speed and torque output.",
+          meta: "Silicon-carbide switching • 800A pulse capability",
+          charge: 58
         },
         charger: {
           title: "Onboard Charger",
-          text: "Converts AC from charging stations into DC to recharge the battery safely."
+          text: "Converts AC from charging stations into DC to recharge the battery safely.",
+          meta: "11 kW onboard charging • Smart thermal management",
+          charge: 81
         }
       };
+
+      const palettes = [
+        ["#4af7d8", "#76a7ff", "#ffd970"],
+        ["#75f98c", "#5ecbff", "#ffd166"],
+        ["#6be6ff", "#c4a4ff", "#ffc26b"],
+        ["#50f7db", "#8cb8ff", "#ffe17b"]
+      ];
 
       const labelButtons = [...document.querySelectorAll(".label")];
       const parts = [...document.querySelectorAll(".part")];
       const detailTitle = document.getElementById("detail-title");
       const detailText = document.getElementById("detail-text");
+      const detailMeta = document.getElementById("detail-meta");
+      const chargeFill = document.getElementById("charge-fill");
+      const chargeValue = document.getElementById("charge-value");
+      const randomizeBtn = document.getElementById("randomize");
+      const tourBtn = document.getElementById("tour");
+      const vizCard = document.getElementById("viz-card");
+      const CHARGE_CLAMP_MIN = 45;
+      const CHARGE_CLAMP_MAX = 97;
+      const CHARGE_VARIATION_RANGE = 19;
+      const CHARGE_VARIATION_OFFSET = 9;
+      const TOUR_INTERVAL_MS = 1600;
+      const TOUR_SEQUENCE = ["battery", "inverter", "motor", "charger"];
+      const liveCharge = Object.fromEntries(Object.keys(details).map((key) => [key, details[key].charge]));
+
+      let activePart = "battery";
+      let tourId = null;
 
       function setActive(part) {
         if (!details[part]) return;
+        activePart = part;
         labelButtons.forEach((el) => el.classList.toggle("active", el.dataset.part === part));
         parts.forEach((el) => el.classList.toggle("active", el.dataset.part === part));
         detailTitle.textContent = details[part].title;
         detailText.textContent = details[part].text;
+        detailMeta.textContent = details[part].meta;
+        const charge = liveCharge[part] ?? details[part].charge;
+        chargeFill.style.width = `${charge}%`;
+        chargeValue.textContent = `${charge}%`;
+      }
+
+      function applySurprise() {
+        const palette = palettes[Math.floor(Math.random() * palettes.length)];
+        document.documentElement.style.setProperty("--accent", palette[0]);
+        document.documentElement.style.setProperty("--accent-2", palette[1]);
+        document.documentElement.style.setProperty("--active", palette[2]);
+
+        const partKeys = Object.keys(details);
+        setActive(partKeys[Math.floor(Math.random() * partKeys.length)]);
+
+        const variedCharge = Math.max(
+          CHARGE_CLAMP_MIN,
+          Math.min(
+            CHARGE_CLAMP_MAX,
+            details[activePart].charge +
+              Math.floor(Math.random() * CHARGE_VARIATION_RANGE) -
+              CHARGE_VARIATION_OFFSET
+          )
+        );
+        liveCharge[activePart] = variedCharge;
+        chargeFill.style.width = `${variedCharge}%`;
+        chargeValue.textContent = `${variedCharge}%`;
+
+        vizCard.classList.remove("spark");
+        // Force reflow to restart spark animation.
+        void vizCard.offsetWidth;
+        vizCard.classList.add("spark");
+      }
+
+      function toggleTour() {
+        if (tourId) {
+          clearInterval(tourId);
+          tourId = null;
+          tourBtn.textContent = "Auto tour: Off";
+          tourBtn.setAttribute("aria-pressed", "false");
+          return;
+        }
+
+        tourId = setInterval(() => {
+          const index = TOUR_SEQUENCE.indexOf(activePart);
+          const nextIndex = index >= 0 ? (index + 1) % TOUR_SEQUENCE.length : 0;
+          setActive(TOUR_SEQUENCE[nextIndex]);
+        }, TOUR_INTERVAL_MS);
+
+        tourBtn.textContent = "Auto tour: On";
+        tourBtn.setAttribute("aria-pressed", "true");
       }
 
       [...labelButtons, ...parts].forEach((el) => {
@@ -244,7 +568,9 @@
         });
       });
 
-      setActive("battery");
+      randomizeBtn.addEventListener("click", applySurprise);
+      tourBtn.addEventListener("click", toggleTour);
+      setActive(activePart);
     </script>
   </body>
 </html>
